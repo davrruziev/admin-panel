@@ -25,7 +25,7 @@ Route::get('/dashboard', function () {
     return view('index');
 })->name("home")->middleware('admin' );
 
-Route::get('/', [AuthController::class,"getLoginPage"])->name("login");
+Route::get('/login', [AuthController::class,"getLoginPage"])->name("login");
 
 Route::get('/register',[AuthController::class,"getRegisterPage"])->name("register");
 
@@ -39,4 +39,6 @@ Route::prefix('admin')->middleware(['admin'])->name('admin.')->group(function ()
     Route::resource('categories', CategoryController::class);
     Route::resource('pages', PageController::class);
     Route::resource('products', ProductController::class);
+    Route::post('/category-image-upload', [CategoryController::class, 'upload'])->name('upload');
+    Route::post('/product-image-upload', [ProductController::class, 'upload'])->name('upload');
 });

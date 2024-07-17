@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Repositories\ProductRepository;
 
-class ProductController extends Controller
+class ProductController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(protected ProductRepository $productRepository)
+    {
+    }
+
     public function index()
     {
-        return ProductResource::collection(Product::all());
+        try {
+            return $this->sendSuccess(ProductResource::collection($this->productRepository->getAll()), "Products All");
+        } catch (\Exception $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getCode());
+        }
     }
 
     public function store(StoreProductRequest $request)
@@ -25,7 +30,11 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        return new ProductResource(Product::find($id));
+        try {
+            return $this->sendSuccess(new ProductResource($this->productRepository->find($id)), "Product Found");
+        } catch (\Exception $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getCode());
+        }
     }
 
     public function update(UpdateProductRequest $request, Product $product)

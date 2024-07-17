@@ -11,7 +11,7 @@
                 @csrf
                 <div class="card">
                     <div class="card-header">
-                        <h4>Create Tags</h4>
+                        <h4>Create Page</h4>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -29,8 +29,8 @@
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <input type="text" name="description"
-                                   class="form-control @error('description') is-invalid @enderror">
+                            <textarea type="text" name="description"
+                                      class="form-control ckeditor @error('description') is-invalid @enderror"></textarea>
                             @error('description')
                             <div class="invalid-feedback"> {{ $message }}</div> @enderror
                         </div>
@@ -42,4 +42,11 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('js')
+    <script src="/admin/ckeditor/ckeditor.js"></script>
+    <script>
+        $('.ckeditor').ckeditor();
+    </script>
 @endsection

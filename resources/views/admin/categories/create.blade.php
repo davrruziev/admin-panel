@@ -35,7 +35,7 @@
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <input type="text" name="description" class="form-control @error('description') is-invalid @enderror">
+                        <textarea  type="text" name="description" class="form-control @error('description') is-invalid @enderror"></textarea>
                         @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -50,4 +50,15 @@
         </div>
     </div>
 
+@endsection
+
+@section('js')
+    <script src="/admin/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('description', {
+            filebrowserUploadUrl: "{{route('admin.upload', ['_token' => csrf_token() ])}}",
+            filebrowserUploadMethod: 'form'
+        });
+    </script>
+    <script src="/admin/assets/bundles/select2/dist/js/select2.full.min.js"></script>
 @endsection

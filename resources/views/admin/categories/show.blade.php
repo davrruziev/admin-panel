@@ -20,17 +20,17 @@
                             <td>{{ $category->id }}</td>
                         </tr>
                         <tr>
-                            <th>Name Uz</th>
+                            <th>Name</th>
                             <td>{{ $category->name }}</td>
                         </tr>
                         <tr>
-                            <th>Image</th> <td><img src="/site/images/categories/{{ $category->image }}" width="150" alt="" srcset=""></td>
+                            <th>Image</th> <td><img src="{{ asset('storage/'.$category->image)}}" width="150" alt="" srcset=""></td>
                         </tr>
                         <tr>
-                            <th>Slug</th>  <td>{{ $category->short_content }}</td>
+                            <th>Short_content</th>  <td>{{ $category->short_content }}</td>
                         </tr>
                         <tr>
-                            <th>Mate Description</th>  <td>{{ $category->description }}</td>
+                            <th>Description</th>  <td>{!! $category->description !!}</td>
                         </tr>
                     </table>
                 </div>

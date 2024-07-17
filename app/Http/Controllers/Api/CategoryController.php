@@ -2,77 +2,67 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
-use Illuminate\Support\Facades\File;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Services\CategoryService;
+use Illuminate\Http\JsonResponse;
+use function Termwind\renderUsing;
 
-class CategoryController extends Controller
+class CategoryController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct
+    (
+        protected CategoryService             $categoryService,
+        protected CategoryRepositoryInterface $categoryRepository
+    )
     {
-        return CategoryResource::collection(Category::all());
+    }
+
+    public function index(): JsonResponse
+    {
+        try {
+            return $this->sendSuccess(CategoryResource::collection($this->categoryRepository->getAll()), 'All Categories');
+        } catch (\Exception $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getCode());
+        }
     }
 
     public function store(StoreCategoryRequest $request)
     {
-        $requestData = $request->all();
-        if($request->hasFile('image')){
-            $file=$request->file('image');
-            $imageName=$file->getClientOriginalName();
-            $file->move('site/images/categories',$imageName);
-            $requestData['image']=$imageName;
+        try {
+            return $this->sendSuccess($this->categoryService->store($request), "Category created successfully", );
+        }catch (\Exception $exception){
+            return $this->sendError($exception->getMessage(), $exception->getCode());
         }
-       $category = Category::create($requestData);
-
-        return $this->success('Category created', $category);
-
     }
 
     public function show($id)
     {
-        return new CategoryResource(Category::findOrFail($id));
+        try {
+            return $this->sendSuccess(new CategoryResource($this->categoryRepository->getById($id)), "Category Find");
+        }catch (\Exception $exception){
+            return $this->sendError($exception->getMessage(), $exception->getCode());
+        }
     }
 
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $requestData = $request->all();
-
-
-        if ($request->hasFile('image')) {
-            $image          = $request->file('image');
-            $newImageName   = $image->getClientOriginalName();
-            $location       = public_path('site/images/categories');
-            $OldImage       = public_path('site/images/categories/'.$category->image);
-
-            $image->move($location, $newImageName);
-
-            if (is_file($OldImage)) {
-                unlink($OldImage);
-            }
-
-            $requestData['image'] = $newImageName;
+        try {
+            return $this->sendSuccess($this->categoryService->update($request, $category), "Category updated successfully");
+        }catch (\Exception $exception){
+            return $this->sendError($exception->getMessage(), $exception->getCode());
         }
-
-        $category->update($requestData);
-
-        return $this->success('Category update', $category);
     }
 
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        if (isset($category->image)) {
-            $OldImage = public_path('site/images/categories/' . $category->image);
-            if (File::exists($OldImage)) {
-                File::delete($OldImage);
-            }
+        try {
+            return $this->sendSuccess($this->categoryService->destroy($category), "Category deleted successfully");
+        }catch (\Exception $exception){
+            return $this->sendError($exception->getMessage(), $exception->getCode());
         }
-        $category = Category::destroy($id);
-        return $this->success('Category deleted', $category);
     }
 }

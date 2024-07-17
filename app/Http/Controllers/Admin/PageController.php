@@ -5,71 +5,58 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePageRequest;
 use App\Models\Page;
+use App\Repositories\Interfaces\PageRepositoryInterface;
+use App\Services\PageService;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct
+    (
+        protected PageService             $pageService,
+        protected PageRepositoryInterface $pageRepository
+    )
+    {
+    }
+
     public function index()
     {
-        $pages = Page::paginate(3);
+        $pages = $this->pageRepository->getPaginate(5);
         return view('admin.pages.index', compact('pages'));
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.pages.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePageRequest $request)
     {
-        $requestData = $request->all();
-        Page::create($requestData);
+        $this->pageService->store($request);
         return redirect()->route('admin.pages.index')->with('success', 'Page added!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Page $page)
     {
         return view('admin.pages.show', compact('page'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Page $page)
     {
         return view('admin.pages.edit', compact('page'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(StorePageRequest $request, Page $page)
     {
-        $requestData = $request->all();
-        $page->update($requestData);
+        $this->pageService->update($request, $page);
         return redirect()->route('admin.pages.index')->with('success', 'Page updated!');
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Page $page)
     {
-        $page->delete();
+        $this->pageService->destroy($page);
         return redirect()->route('admin.pages.index')->with('success', 'Page deleted!');
     }
 }

@@ -13,7 +13,7 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                        <label>Name_uz</label>
+                        <label>Name</label>
                         <input type="text" name="name" value="{{ $category->name }}" class="form-control  @error('name') is-invalid @enderror">
                         @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -23,7 +23,7 @@
                     <div class="form-group">
                         <label>Image</label>
                         <input type="file" name="image" class="form-control @error('image') is-invalid @enderror">
-                        <img src="/site/images/categories/{{ $category->image }}" width="150" srcset="">
+                        <img src="{{ asset('storage/'.$category->image)}}" width="150" srcset="">
                         @error('image') <div class="invalid-feedback"> {{ $message }}</div> @enderror
                     </div>
                     <div class="form-group">
@@ -35,7 +35,7 @@
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <input type="text" name="description" value="{{ $category->description }}" class="form-control @error('description') is-invalid @enderror">
+                        <textarea type="text" name="description" class="form-control @error('description') is-invalid @enderror">{!! $category->description !!}</textarea>
                         @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -50,4 +50,15 @@
         </div>
     </div>
 
+@endsection
+
+@section('js')
+    <script src="/admin/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('description', {
+            filebrowserUploadUrl: "{{route('admin.upload', ['_token' => csrf_token() ])}}",
+            filebrowserUploadMethod: 'form'
+        });
+    </script>
+    <script src="/admin/assets/bundles/select2/dist/js/select2.full.min.js"></script>
 @endsection

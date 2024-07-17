@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,14 +41,9 @@ class AuthController extends Controller
     }
 
 
-    public function signIn(Request $request){
-        $this->validate($request,[
-            "email"=>"required|email",
-            "password"=>"required",
-        ]);
+    public function signIn(LoginRequest $request){
+
         $user=User::where("email",$request->email)->first();
-
-
 
         if($user === null){
             return redirect()->back()->with(['message' => "user not"]);
@@ -66,14 +62,8 @@ class AuthController extends Controller
 
     }
 
-    public function signUp(Request $request){
-        $this->validate($request,[
-            "first_name"=>"required",
-            "last_name"=>"required",
-            "email"=>"required|email",
-            "password"=>"required",
-            "phone"=>"required",
-        ]);
+    public function signUp(UserRequest $request){
+
 
         $user=User::where("email",$request->email)->first();
 

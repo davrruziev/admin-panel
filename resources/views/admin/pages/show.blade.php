@@ -7,7 +7,7 @@
         <div class="col-12 col-md-12 col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Tag ID -{{ $page->id }}</h4>
+                    <h4>Page ID -{{ $page->id }}</h4>
                     <div class="card-header-form">
                         <a href="{{ url()->previous() }}" class="btn btn-info">Back</a>
                     </div>
@@ -29,7 +29,7 @@
                                 <td>{{ $page->short_content }}</td>
                             </tr>
                             <tr>
-                                <th>Description</th><td>{{ $page->description }}</td>
+                                <th>Description</th><td>{!! $page->description !!}</td>
                             </tr>
 
                         </table>

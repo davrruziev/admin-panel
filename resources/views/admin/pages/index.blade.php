@@ -38,7 +38,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $page->title }}</td>
                                     <td>{{ $page->short_content }}</td>
-                                    <td>{{ $page->description }}</td>
+                                    <td>{!! $page->description !!}</td>
                                     <td>
                                         <a href="{{ route('admin.pages.edit', $page->id) }}"
                                            class="btn btn-info">Edit</a>

@@ -50,10 +50,10 @@
                                         {{ $product->category->name ?? ''}}
                                     </td>
                                     <td>
-                                        <img alt="image" src="/site/images/products/{{ $product->image }}" width="35">
+                                        <img alt="image" src="{{ asset('storage/'.$product->image)}}" width="35">
                                     </td>
                                     <td>{{ $product->short_content }}</td>
-                                    <td>{{ $product->description }}</td>
+                                    <td>{!! $product->description  !!}</td>
                                     <td>
                                         <a href="{{ route('admin.products.show', $product->id) }}"
                                            class="btn btn-primary">View</a>

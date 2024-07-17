@@ -30,8 +30,8 @@
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <input type="text" name="description" value="{{ $page->description }}"
-                                   class="form-control @error('description') is-invalid @enderror">
+                            <textarea type="text" name="description"
+                                      class="form-control @error('description') is-invalid @enderror">{!! $page->description !!}</textarea>
                             @error('description')
                             <div class="invalid-feedback"> {{ $message }}</div> @enderror
                         </div>
@@ -43,4 +43,11 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('js')
+    <script src="/admin/ckeditor/ckeditor.js"></script>
+    <script>
+        $('.ckeditor').ckeditor();
+    </script>
 @endsection

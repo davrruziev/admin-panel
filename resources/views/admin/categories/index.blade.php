@@ -38,11 +38,11 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $category->name }}</td>
                                     <td>
-                                        <img alt="image" src="/site/images/categories/{{ $category->image }}"
+                                        <img alt="image" src="{{ asset('storage/'.$category->image)}}"
                                              width="35">
                                     </td>
                                     <td>{{ $category->short_content }}</td>
-                                    <td>{{ $category->description }}</td>
+                                    <td>{!! $category->description  !!}</td>
                                     <td>
                                         <a href="{{ route('admin.categories.edit', $category->id) }}"
                                            class="btn btn-info">Edit</a>

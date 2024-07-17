@@ -14,13 +14,14 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $description = str_replace('/storage/', url('storage/') . '/', $this->description);
         return [
             'id' => $this->id,
             'category' => $this->category,
             'name' => $this->name,
-            'image' => $this->image,
+            'image' => url('storage/' . $this->image),
             'short_content' => $this->short_content,
-            'description' => $this->description,
+            'description' => $description,
             'created_at' => $this->created_at
         ];
     }
